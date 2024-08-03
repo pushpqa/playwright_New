@@ -38,7 +38,7 @@ test.beforeEach( async ({ page }) => {
 // })
 
 
-test('Logout',async ({ page }) => {
+test('Logout @regression',async ({ page }) => {
 
     const loginPage=new LoginPage(page)
     const HRMDashboard=new HRMdashboard(page)
@@ -55,7 +55,7 @@ test('Logout',async ({ page }) => {
 
 })
 
-test('Add Employee',async ({ page }) => {
+test('Add Employee @regression',async ({ page }) => {
 
     const PIMemployee =new PIMEmployee(page)
 
@@ -65,7 +65,7 @@ test('Add Employee',async ({ page }) => {
 
     await PIMemployee.clickOnemployeeAddButton()
 
-    await PIMemployee.addEmployee
+    await PIMemployee.addEmployee()
 
     // await PIMemployee.clickOnemployeeFirstName()
 
@@ -82,7 +82,7 @@ test('Add Employee',async ({ page }) => {
 
   })
 
-  test('Search Employee by Name and Cancel record delete option',async ({ page }) => {
+  test('Search Employee by Name and Cancel record delete option @smoke',async ({ page }) => {
 
     const PIMemployee =new PIMEmployee(page)
 
@@ -102,7 +102,7 @@ test('Add Employee',async ({ page }) => {
 
   })
 
-  test.only('Search Employee by Name and Confirm record delete option',async ({ page }) => {
+  test('Search Employee by Name and Confirm record delete option @regression',async ({ page }) => {
 
     const PIMemployee =new PIMEmployee(page)
 
@@ -118,7 +118,8 @@ test('Add Employee',async ({ page }) => {
 
   
 
-  test('Search Employee by Status',async ({ page }) => {
+  test('Search Employee by Status @smoke',
+  async ({ page }) => {
 
     const PIMemployee =new PIMEmployee(page)
 
@@ -126,9 +127,4 @@ test('Add Employee',async ({ page }) => {
 
     await PIMemployee.employeeSearchByStatus("Full-Time Contract")
 
-
   })
-
-
-
-
