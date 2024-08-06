@@ -88,7 +88,7 @@ test('Add Employee @regression',async ({ page }) => {
 
     await PIMemployee.clickOnPIM()
 
-    await page.pause()
+   // await page.pause()
 
     //await PIMemployee.clickOnemployeeAddButton()
 
