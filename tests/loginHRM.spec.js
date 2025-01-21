@@ -1,5 +1,6 @@
 const { test, expect } = require('@playwright/test');
 
+import { clear } from 'console';
 import { forgotPassword } from '../pages/forgotPassword';
 // Importing pages from pages folder
 import { LoginPage } from '../pages/loginpage'
@@ -13,9 +14,14 @@ import { Utils } from '../pages/Utils';
 const testdata = require("../testData/testdata.json")
 
 test.beforeEach(async ({ page }) => {
+  
   const loginPage = new LoginPage(page)
   const HRMDashboard = new HRMdashboard(page)
   const utils = new Utils(page);
+  
+  // Clear cookies and cache
+  await page.context().clearCookies();
+  //await page.context().clearCache();
 
   await loginPage.goToHRMLoginPage(testdata.login.loginURL)
   await loginPage.signinButtonIsVisible()
@@ -47,7 +53,7 @@ test('Logout @regression', async ({ page }) => {
 
 })
 
-test.only('Add Employee @regression', async ({ page }) => {
+test('Add Employee @regression', async ({ page }) => {
 
   const PIMemployee = new PIMEmployee(page)
 
@@ -63,9 +69,7 @@ test('Search Employee by Name and Cancel record delete option @smoke', async ({ 
   const PIMemployee = new PIMEmployee(page)
 
   await PIMemployee.clickOnPIM()
-
-  await PIMemployee.employeeSearchByName()
-
+  await PIMemployee.employeeSearchByName(testdata.Dashboard.employeeName)
   await PIMemployee.cancelDeleteRecordOption()
 
 })
@@ -76,7 +80,7 @@ test('Search Employee by Name and Confirm record delete option @regression', asy
 
   await PIMemployee.clickOnPIM()
 
-  await PIMemployee.employeeSearchByName()
+  await PIMemployee.employeeSearchByName(testdata.Dashboard.employeeName)
 
   await PIMemployee.acceptDeleteRecordOption()
 
@@ -90,12 +94,16 @@ test('Search Employee by Status @smoke', async ({ page }) => {
 
   await PIMemployee.clickOnPIM()
 
-  await PIMemployee.employeeSearchByStatus("Full-Time Contract")
+  await PIMemployee.employeeSearchByStatus(testdata.Dashboard.employeeStatus) 
 
 })
 
 test('forgotPassword', async ({ page }) => {
   const forgotpassword = new forgotPassword(page)
+  const utils = new Utils(page)
+  const HRMDashboard = new HRMdashboard(page)
+  expect(await HRMDashboard.logoutButtonIsVisible()).toBeTruthy();
+  await utils.clickElement(HRMDashboard.logoutButton)
   await forgotpassword.clickForgotPassword()
   await forgotpassword.enterUsername(testdata.login.username)
   await forgotpassword.clickResetPassword()
