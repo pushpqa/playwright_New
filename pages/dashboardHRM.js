@@ -26,7 +26,7 @@ class HRMdashboard{
         this.page=page
         this.dashboardText="//h6[normalize-space()='Dashboard']"
         this.profileTab = ".oxd-icon.bi-caret-down-fill.oxd-userdropdown-icon" 
-        this.logoutButton="(//a[normalize-space()='Logout'])[1]"
+        this.logoutButton="//a[normalize-space()='Logout']" 
         this.admin=".oxd-main-menu-item.active"
        // this.PIM=getByRole('link', { name: 'PIM' })
        

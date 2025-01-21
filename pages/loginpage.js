@@ -8,13 +8,13 @@ exports.LoginPage=class LoginPage{
         this.username = "input[placeholder='Username']"
         this.password="input[placeholder='Password']"
         this.signinButton="button[type='submit']"
+        this.forgotPassword=".oxd-text.oxd-text--p.orangehrm-login-forgot-header"
     }
 
     async goToHRMLoginPage()
     {
-        await this.page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
+        await this.page.goto('/')
     }
-
     async signinButtonIsVisible()
     {
         await expect (this.page.locator(this.signinButton)).toBeVisible()
@@ -35,14 +35,19 @@ exports.LoginPage=class LoginPage{
         await this.page.click(this.signinButton)
     }
 
-    async verifyCurrentURL()
+    async verifyCurrentURL(currentURL)
     {
-        expect(await this.page.url()).toBe("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login")
+        expect(await this.page.url()).toBe(currentURL)
     }
 
-    async verifyPageTitle()
+    async verifyPageTitle(pageTitle)
     {
-        expect(await this.page.title()).toBe("OrangeHRM")
+        expect(await this.page.title()).toBe(pageTitle)
+    }
+
+    async clickOnForgotPassword()
+    {
+        await this.page.click(this.forgotPassword)
     }
 
 }

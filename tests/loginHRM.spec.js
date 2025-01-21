@@ -1,36 +1,27 @@
-const { test, expect } = require('@playwright/test'); 
+const { test, expect } = require('@playwright/test');
 
+import { forgotPassword } from '../pages/forgotPassword';
+// Importing pages from pages folder
 import { LoginPage } from '../pages/loginpage'
 //const LoginPage = require("../pages/loginpage")
-
-//import { PIMEmployee } from '../pages/pimPage'
-
 const HRMdashboard = require("../pages/dashboardHRM")
-
 const PIMEmployee = require("../pages/pimPage")
+import { Utils } from '../pages/Utils';
 
-const testdata=JSON.parse(JSON.stringify(require("../testdata.json")))
+//Importing test data from testdata.json file
+//const testdata =JSON.parse(JSON.stringify (require("../testData/testdata.json")))
+const testdata = require("../testData/testdata.json")
 
+test.beforeEach(async ({ page }) => {
+  const loginPage = new LoginPage(page)
+  const HRMDashboard = new HRMdashboard(page)
+  const utils = new Utils(page);
 
-test.beforeEach( async ({ page }) => {
-  
- const loginPage=new LoginPage(page)
- const HRMDashboard=new HRMdashboard(page)
+  await loginPage.goToHRMLoginPage(testdata.login.loginURL)
+  await loginPage.signinButtonIsVisible()
 
- await loginPage.goToHRMLoginPage()
-
- //await page.pause()
-
- await loginPage.signinButtonIsVisible()
-
- //await page.pause()
-
- await loginPage.loginToHRM(testdata.username, testdata.password)
-
- 
-
- await HRMDashboard.DashboardTextIsVisible()
-
+  await loginPage.loginToHRM(testdata.login.username, testdata.login.password)
+  await HRMDashboard.DashboardTextIsVisible()
 })
 
 // test.afterAll( async ({ page })=>{
@@ -38,93 +29,75 @@ test.beforeEach( async ({ page }) => {
 // })
 
 
-test('Logout @regression',async ({ page }) => {
+test('Logout @regression', async ({ page }) => {
 
-    const loginPage=new LoginPage(page)
-    const HRMDashboard=new HRMdashboard(page)
+  const loginPage = new LoginPage(page)
+  const HRMDashboard = new HRMdashboard(page)
+  const utils = new Utils(page);
 
- expect(await HRMDashboard.logoutButtonIsVisible()).toBeTruthy();
+  expect(await HRMDashboard.logoutButtonIsVisible()).toBeTruthy();
 
- await HRMDashboard.logout()
-
- await loginPage.loginTextIsVisible()
-
- await loginPage.verifyCurrentURL()
-
- await loginPage.verifyPageTitle()
+  // await HRMDashboard.logout()
+  await utils.clickElement(HRMDashboard.logoutButton)
+  // await loginPage.loginTextIsVisible()
+  await utils.isVisible(loginPage.loginText)
+  //await loginPage.verifyCurrentURL(testdata.Dashboard.currentURL)
+  await utils.verifyCurrentURL(testdata.login.loginURL)
+  await loginPage.verifyPageTitle(testdata.Dashboard.pageTitle)
 
 })
 
-test('Add Employee @regression',async ({ page }) => {
+test.only('Add Employee @regression', async ({ page }) => {
 
-    const PIMemployee =new PIMEmployee(page)
+  const PIMemployee = new PIMEmployee(page)
 
-    //await page.pause()
+  await PIMemployee.clickOnPIM()
 
-    await PIMemployee.clickOnPIM()
+  await PIMemployee.clickOnemployeeAddButton()
 
-    await PIMemployee.clickOnemployeeAddButton()
+  await PIMemployee.addEmployee()
+})
 
-    await PIMemployee.addEmployee()
+test('Search Employee by Name and Cancel record delete option @smoke', async ({ page }) => {
 
-    // await PIMemployee.clickOnemployeeFirstName()
+  const PIMemployee = new PIMEmployee(page)
 
-    // await PIMemployee.clickOnemployeeMiddleName()
+  await PIMemployee.clickOnPIM()
 
-    // await PIMemployee.clickOnemployeLastName()
+  await PIMemployee.employeeSearchByName()
 
-    // await PIMemployee.clickOnemployeeIDButton()
+  await PIMemployee.cancelDeleteRecordOption()
 
-    // await PIMemployee.clickOnemployeeSaveButton()
+})
 
-    // await PIMemployee.AddEmployeeSuccessMSGIsVisible()
+test('Search Employee by Name and Confirm record delete option @regression', async ({ page }) => {
+
+  const PIMemployee = new PIMEmployee(page)
+
+  await PIMemployee.clickOnPIM()
+
+  await PIMemployee.employeeSearchByName()
+
+  await PIMemployee.acceptDeleteRecordOption()
+
+})
 
 
-  })
 
-  test('Search Employee by Name and Cancel record delete option @smoke',async ({ page }) => {
+test('Search Employee by Status @smoke', async ({ page }) => {
 
-    const PIMemployee =new PIMEmployee(page)
+  const PIMemployee = new PIMEmployee(page)
 
-    await PIMemployee.clickOnPIM()
+  await PIMemployee.clickOnPIM()
 
-   // await page.pause()
+  await PIMemployee.employeeSearchByStatus("Full-Time Contract")
 
-    //await PIMemployee.clickOnemployeeAddButton()
+})
 
-   // await PIMemployee.addEmployee
-
-   // await PIMemployee.clickOnemployeeSearchDropdown()
-
-    await PIMemployee.employeeSearchByName()
-
-    await PIMemployee.cancelDeleteRecordOption()
-
-  })
-
-  test('Search Employee by Name and Confirm record delete option @regression',async ({ page }) => {
-
-    const PIMemployee =new PIMEmployee(page)
-
-    await PIMemployee.clickOnPIM()
-
-   // await PIMemployee.clickOnemployeeSearchDropdown()
-
-    await PIMemployee.employeeSearchByName()
-
-    await PIMemployee.acceptDeleteRecordOption()
-
-  })
-
-  
-
-  test('Search Employee by Status @smoke',
-  async ({ page }) => {
-
-    const PIMemployee =new PIMEmployee(page)
-
-    await PIMemployee.clickOnPIM()
-
-    await PIMemployee.employeeSearchByStatus("Full-Time Contract")
-
-  })
+test('forgotPassword', async ({ page }) => {
+  const forgotpassword = new forgotPassword(page)
+  await forgotpassword.clickForgotPassword()
+  await forgotpassword.enterUsername(testdata.login.username)
+  await forgotpassword.clickResetPassword()
+  await forgotpassword.verifySuccessMessage()
+})
