@@ -11,5 +11,18 @@
     "pageTitle":"OrangeHRM",
     "employeeName":"Rosella",
     "employeeStatus":"Full-Time Contract"
+   },
+
+   "MyInfo": {
+    "title":"My Info",
+    "employeeFirstName":"Aman",
+    "employeeMiddleName":"Raj",
+      "employeeLastName":"Sharma",
+      "employeeId":"001",
+      "OtherId":"002",
+      "licenseNumber":"123456",
+      "LicenseExpiryDate":"2021-12-31",
+      "DateOfBirth":"2000-01-01"
+
    }
 }

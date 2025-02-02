@@ -1,10 +1,9 @@
 {
   "name": "playwright",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
-    "test:loginHRMAll": "npx playwright test tests/loginHRM.spec.js --headed --project=firefox", 
+    "test:loginHRMAll": "npx playwright test tests/loginHRM.spec.js --headed --project=firefox",
     "test:codegenHRM": "npx playwright test tests/CodegenHRM.spec.js  --project=chromium --headed",
     "test:smokeHRMChrome": "npx playwright test --grep @smoke",
     "test:regressionHRMChrome": "npx playwright test --grep @regression --headed",
@@ -14,10 +13,13 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@playwright/test": "^1.45.3",
-    "@types/node": "^20.12.7"
+    "@playwright/test": "^1.50.0",
+    "@types/node": "^20.12.7",
+    "allure-playwright": "^3.0.9"
   },
-  "dependencies": {
-    "allure-playwright": "^3.0.0-beta.7"
-  }
+  "directories": {
+    "test": "tests"
+  },
+  
+  "description": ""
 }

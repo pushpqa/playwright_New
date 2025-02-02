@@ -7,6 +7,7 @@ import { LoginPage } from '../pages/loginpage'
 //const LoginPage = require("../pages/loginpage")
 const HRMdashboard = require("../pages/dashboardHRM")
 const PIMEmployee = require("../pages/pimPage")
+const MyInfoPage = require("../pages/myInfo")
 import { Utils } from '../pages/Utils';
 
 //Importing test data from testdata.json file
@@ -14,11 +15,11 @@ import { Utils } from '../pages/Utils';
 const testdata = require("../testData/testdata.json")
 
 test.beforeEach(async ({ page }) => {
-  
+
   const loginPage = new LoginPage(page)
   const HRMDashboard = new HRMdashboard(page)
   const utils = new Utils(page);
-  
+
   // Clear cookies and cache
   await page.context().clearCookies();
   //await page.context().clearCache();
@@ -94,7 +95,7 @@ test('Search Employee by Status @smoke', async ({ page }) => {
 
   await PIMemployee.clickOnPIM()
 
-  await PIMemployee.employeeSearchByStatus(testdata.Dashboard.employeeStatus) 
+  await PIMemployee.employeeSearchByStatus(testdata.Dashboard.employeeStatus)
 
 })
 
@@ -108,4 +109,15 @@ test('forgotPassword', async ({ page }) => {
   await forgotpassword.enterUsername(testdata.login.username)
   await forgotpassword.clickResetPassword()
   await forgotpassword.verifySuccessMessage()
+})
+
+test('updateEmployeeInfo', async ({ page }) => {
+  const myInfopage = new MyInfoPage(page)
+  await myInfopage.clickMyInfo()
+  await page.pause()
+  await myInfopage.updateEmployeeInfo('John', 'Doe', 'Smith', '12378', '456', '789', '2022-12-31', '1990-12-31')
+  
+  await myInfopage.save()
+  await myInfopage.expectSuccessMessage()
+
 })
